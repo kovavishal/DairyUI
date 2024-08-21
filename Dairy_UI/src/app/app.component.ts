@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTable } from '@angular/material/table';
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -19,6 +19,7 @@ import { MatTable } from '@angular/material/table';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,HttpClientModule,MatTable],
+    providers:[DatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

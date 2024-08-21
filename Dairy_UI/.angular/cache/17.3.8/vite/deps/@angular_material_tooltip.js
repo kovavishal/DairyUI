@@ -2,18 +2,18 @@ import {
   ComponentPortal,
   Overlay,
   OverlayModule
-} from "./chunk-MVY2MRRN.js";
+} from "./chunk-VCZGZJQR.js";
+import {
+  CdkScrollableModule,
+  ScrollDispatcher
+} from "./chunk-3NEVACDT.js";
 import {
   animate,
   state,
   style,
   transition,
   trigger
-} from "./chunk-YJV6QSXK.js";
-import {
-  CdkScrollableModule,
-  ScrollDispatcher
-} from "./chunk-FPHPH26A.js";
+} from "./chunk-B4UXC7O6.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -26,12 +26,12 @@ import {
   coerceNumberProperty,
   hasModifierKey,
   normalizePassiveListenerOptions
-} from "./chunk-T2F7ZHN5.js";
+} from "./chunk-FQUMGACF.js";
 import {
   CommonModule,
   DOCUMENT,
   NgClass
-} from "./chunk-PN7SR372.js";
+} from "./chunk-CBRJBBAF.js";
 import {
   ANIMATION_MODULE_TYPE,
   ChangeDetectionStrategy,
@@ -50,7 +50,6 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation$1,
-  __spreadValues,
   inject,
   setClassMetadata,
   take,
@@ -76,7 +75,10 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵviewQuery
-} from "./chunk-ZHPRS2ED.js";
+} from "./chunk-UGQ3HPSB.js";
+import {
+  __spreadValues
+} from "./chunk-WKYGNSYM.js";
 
 // node_modules/@angular/material/fesm2022/tooltip.mjs
 var _c0 = ["tooltip"];

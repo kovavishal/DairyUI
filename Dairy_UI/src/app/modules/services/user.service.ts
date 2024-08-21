@@ -26,9 +26,13 @@ getApiCall(params:string): Observable<any> {
       .get<any>(this.apiURL + params)
      // .pipe(retry(1), catchError(this.handleError));
   }
-//   deleteUser(id: number): Observable<User> {
-//     return this.http.delete<User>(`${this.serviceUrl}/${id}`);
-//   }
+
+  postApiCall(params: string, data:any): Observable<any> {
+    return this.http.post<any>(this.apiURL + params, data);
+  }
+  getApiWithParam(params: string, id: number): Observable<any> {
+    return this.http.get<any>(this.apiURL+params+'?'+"orderId="+id);
+  }
 
 //   deleteUsers(users: User[]): Observable<User[]> {
 //     return forkJoin(

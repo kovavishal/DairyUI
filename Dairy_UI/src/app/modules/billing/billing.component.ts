@@ -8,13 +8,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatIconModule} from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {UserService}  from '../services/user.service'
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { UserService } from '../services/user.service'
 import { MatTable } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
+import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -27,19 +29,20 @@ import { MatTable } from '@angular/material/table';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,MatSelectModule, MatDatepickerModule,MatCheckboxModule,MatIconModule, MatNativeDateModule,
+    MatButtonModule, MatSelectModule, MatDatepickerModule, MatCheckboxModule, MatIconModule, MatNativeDateModule,
     MatTooltipModule],
   templateUrl: './billing.component.html',
   styleUrl: './billing.component.css'
 })
 export class BillingComponent implements OnInit {
-  @ViewChild(MatTable, { static: true }) 
+  @ViewChild(MatTable, { static: true })
   table!: MatTable<any>;
   billingForm: FormGroup;
   Customer: any = [];
-  products:any=[];
- 
-  displayedColumns: string[] = ['product_name','quantity','extras','rate', 'cgst_percentage','sgst_percentage','amount','action'];
+  products: any = [];
+  isLastRow: boolean = false;
+
+  displayedColumns: string[] = ['product_name', 'quantity', 'extras', 'rate', 'cgst_percentage', 'sgst_percentage', 'amount', 'action'];
   myformArray = new FormArray([
     new FormGroup({
       product_name: new FormControl(''),
@@ -48,97 +51,179 @@ export class BillingComponent implements OnInit {
       rate: new FormControl(0),
       cgst_percentage: new FormControl(0),
       sgst_percentage: new FormControl(0),
-      amount: new FormControl('')
-        })
+      amount: new FormControl(0)
+    })
   ])
   columns: number = 8;
-  constructor(private fb: FormBuilder, public userApi: UserService) {
+  constructor(private fb: FormBuilder, public userApi: UserService, private datePipe: DatePipe) {
     this.billingForm = this.fb.group({
-      customer:['', Validators.required],
-      inputDate:['', Validators.required],
-      product:['', Validators.required],
-      quantity:['', Validators.required],
-      totalAmount:[0, Validators.required]
-});
+      customer: ['', Validators.required],
+      inputDate: ['', Validators.required],
+      product: ['', Validators.required],
+      quantity: ['', Validators.required],
+      extras: ['', Validators.required],
+      totalAmount: []
+    });
   }
 
-  itemid =1;
-  addRow(event:any) {
+  addRow(event: any) {
     event.preventDefault();
+    this.isLastRow = false;
     this.myformArray.push(
       new FormGroup({
         product_name: new FormControl(''),
-      quantity: new FormControl(''),
-      extras: new FormControl(''),
-      rate: new FormControl(0),
-      cgst_percentage: new FormControl(0),
-      sgst_percentage: new FormControl(0),
-      amount: new FormControl('')
-        })
+        quantity: new FormControl(''),
+        extras: new FormControl(''),
+        rate: new FormControl(0),
+        cgst_percentage: new FormControl(0),
+        sgst_percentage: new FormControl(0),
+        amount: new FormControl(0)
+      })
     );
     this.table.renderRows();
-}
+  }
 
 
 
   removeRow(index: number) {
-    this.myformArray.removeAt(index);
-    this.table.renderRows();
+    event?.preventDefault();
+    var tableLength = this.myformArray.length;
+    if (tableLength > 1) {
+      this.isLastRow = false;
+      this.myformArray.removeAt(index);
+      this.table.renderRows();
+    } else {
+      this.isLastRow = true;
+      this.myformArray = new FormArray([
+      new FormGroup({
+        product_name: new FormControl(''),
+        quantity: new FormControl(''),
+        extras: new FormControl(''),
+        rate: new FormControl(0),
+        cgst_percentage: new FormControl(0),
+        sgst_percentage: new FormControl(0),
+        amount: new FormControl(0)
+      })
+    ])
+    }
   }
-  
+
   ngOnInit() {
     this.loadUsers();
     this.loadProducts();
+    this.isLastRow = true;
   }
-  loadUsers(){
+  loadUsers() {
     return this.userApi.getApiCall('/users/getAllUser').subscribe((data: any) => {
       this.Customer = data.data;
     });
   }
-  loadProducts(){
+  loadProducts() {
     return this.userApi.getApiCall('/products/allProducts').subscribe((data: any) => {
       this.products = data.data;
     });
   }
   onSubmit(): void {
-    if (this.billingForm.valid) {
-      const newInvoice = this.billingForm.value;
-      //this.invoices.push(newInvoice);
-      this.billingForm.reset();
+    const newInvoice = this.billingForm.value;
+    var productList: any = [];
+    this.myformArray.controls.map((data) => {
+      var req: any = {
+        "product_id": data.controls.product_name.value,
+        "rate": data.controls.rate.value,
+        "cgst_percentage": data.controls.cgst_percentage.value,
+        "sgst_percentage": data.controls.sgst_percentage.value,
+        "quantity": data.controls.quantity.value,
+        "liters": data.controls.extras.value,
+        "amount": data.controls.amount.value,
+
+      }
+      productList.push(req);
+    })
+    var date = this.datePipe.transform(newInvoice.inputDate, "yyyy-MM-dd");
+
+    //if (this.billingForm.valid) {
+    var reqBody = {
+      "user_id": "",
+      "customer_id": newInvoice.customer,
+      "productList": productList,
+      "totalAmount": newInvoice.totalAmount,
+      "billing_date": date
     }
-  }
-  onProductSelected(value:any, index:number){
-this.products.map((items)=>{
-  if(items.product_id==value){
-    this.myformArray.at(index).get('rate')?.setValue(items.rate);
-    this.myformArray.at(index).get('cgst_percentage')?.setValue(items.cgst_percentage);
-    this.myformArray.at(index).get('sgst_percentage')?.setValue(items.sgst_percentage);
- }
-})
-  }
-  focusOutFunction(event:any, index:number){
-    let litre=event.target.value;
-    let rate=this.myformArray.at(index).get('rate')?.getRawValue();
-    let cgst_percent =this.myformArray.at(index).get('cgst_percentage')?.getRawValue();
-    let sgst_percent =this.myformArray.at(index).get('sgst_percentage')?.getRawValue();
-    let baseAmount= litre*rate;
-let cgst = baseAmount*(cgst_percent/100);
-let sgst = baseAmount*(sgst_percent/100);
-let amount = Math.abs(baseAmount+cgst+sgst).toFixed(0);
-this.myformArray.at(index).get('amount')?.setValue(amount);
-var totalAmnt:any=0;
-this.myformArray.controls.map((data)=>{
-  var amntVal:any=data.controls.amount.value;
-  totalAmnt=parseInt(totalAmnt)+parseInt(amntVal);
-  this.billingForm.controls['totalAmount'].setValue(totalAmnt)
-  
-  console.log("value: ", totalAmnt)
-})
-    // this.dataSource.map((u) => {
-    //   if(u.itemid == id){
-    //     console.log("product: ",u.product_name);
-    //   }
+    // this.billingForm = this.fb.group({
+    //   customer: ['', Validators.required],
+    //   inputDate: ['', Validators.required],
+    //   product: ['', Validators.required],
+    //   quantity: ['', Validators.required],
+    //   extras: ['', Validators.required],
+    //   totalAmount: []
     // });
-    
+    // this.myformArray = new FormArray([
+    //   new FormGroup({
+    //     product_name: new FormControl(''),
+    //     quantity: new FormControl(''),
+    //     extras: new FormControl(''),
+    //     rate: new FormControl(0),
+    //     cgst_percentage: new FormControl(0),
+    //     sgst_percentage: new FormControl(0),
+    //     amount: new FormControl(0)
+    //   })
+    // ])
+     this.userApi.postApiCall('/orders/saveOrder', reqBody).subscribe((response: any) => {
+      console.log("response: ", response)
+      if (response.statusCode == 200) {
+        window.location.reload();
+        this.printOrder(response.data[0].orderId);
+      }
+      else {
+
+      }
+    })
+    //this.billingForm.reset();
+    // }
+  }
+  printOrder(orderId) {
+    var mediaType = 'application/pdf';
+    return this.userApi.getApiWithParam('/print/printOrder', orderId).subscribe((response: any) => {
+     
+      if (response.statusCode == 200) {
+        this.billingForm.reset();
+        this.myformArray.reset();
+        var blob = new Blob([response], { type: mediaType });
+        saveAs(blob, 'bill.pdf');
+      }
+    })
+
+  }
+
+
+  onProductSelected(value: any, index: number) {
+    event?.preventDefault();
+    this.products.map((items) => {
+      if (items.product_id == value) {
+        this.myformArray.at(index).get('rate')?.setValue(items.rate);
+        this.myformArray.at(index).get('cgst_percentage')?.setValue(items.cgst_percentage);
+        this.myformArray.at(index).get('sgst_percentage')?.setValue(items.sgst_percentage);
+      }
+    })
+  }
+  focusOutFunction(event: any, index: number) {
+    event.preventDefault();
+    let litre = event.target.value;
+    let rate = this.myformArray.at(index).get('rate')?.getRawValue();
+    let cgst_percent = this.myformArray.at(index).get('cgst_percentage')?.getRawValue();
+    let sgst_percent = this.myformArray.at(index).get('sgst_percentage')?.getRawValue();
+    let baseAmount = litre * rate;
+    let cgst = baseAmount * (cgst_percent / 100);
+    let sgst = baseAmount * (sgst_percent / 100);
+    let amount = Math.abs(baseAmount + cgst + sgst).toFixed(0);
+    this.myformArray.at(index).get('amount')?.setValue(parseInt(amount));
+    var totalAmnt: any = 0;
+    this.myformArray.controls.map((data) => {
+      console.log("data: ", data)
+      var amntVal: any = data.controls.amount.value;
+      totalAmnt = parseInt(totalAmnt) + parseInt(amntVal);
+      this.billingForm.controls['totalAmount'].setValue(totalAmnt)
+
+    })
   }
 }
