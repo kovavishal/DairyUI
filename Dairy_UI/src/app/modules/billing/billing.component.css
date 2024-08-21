@@ -1,0 +1,109 @@
+/* .matcard .mat-card-header-text{
+margin: 0 5px;
+} */
+ 
+/* @media (min-width :768px) {
+  .flexcenter{
+    width:750px;
+  }
+}
+@media (min-width :992px) {
+  .flexcenter{
+    width:970px;
+  }
+}
+@media (min-width :1200px) {
+  .flexcenter{
+    width:1170px;
+  }
+} */
+/* mat-table {
+  margin-top: 20px;
+} */
+.mat-mdc-card-content {
+  display: block;
+  padding: 0 50px;
+}
+.flexcenter{
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.flex{
+  display:flex;
+}
+.mainheader{
+  display: flex;
+    padding: 16px 57px 0;
+    margin-bottom: 25px;
+  font-weight: bold;
+  font-size: 14px;
+  /* height:250px;
+  min-height: 250px;
+ max-height: 250px;
+ overflow-y: auto; */
+
+}
+.mainpage .mat-form-field{
+  font-size: 12px!important;
+  width: 100%!important;
+  line-height: 15px!important;
+  
+}
+/* .mainpage .mat-date{
+  height: 53px;
+    padding-right: 67px;
+    text-align: right;
+    margin-right: 40px;
+} */
+.mainpage .search-container{
+  flex-flow: row nowrap!important;
+  justify-content: flex-start!important;
+  align-items: stretch!important;
+  align-content: stretch!important;
+}
+.mainpage .item{
+  padding: 0px 5px!important;
+  width: 40%!important;
+}
+.mainpage .item-s6{
+  flex-basis: 26%;
+}
+.mainpage .table{
+   padding-left:5px
+}
+.mainpage .flexend{
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.mainpage .item-s5{
+flex-basis: 4%;
+height:55px;
+margin-left: 3%;
+margin-top:0%;
+}
+.table-header-cell{
+  padding: 0px 18px 0 16px!important;
+}
+.sbmt-btn{
+  margin-bottom:1%;
+  font-size: 17px!important;
+  width: 7%!important;
+  height: 40px!important;
+ 
+}
+.mainpage .mat-sized-button{
+  line-height: 24px!important;
+  margin:10px 7px 0px!important;
+  width:100%!important;
+  padding-top:2px!important;  
+}
+.mainpage .mat-sized-input{
+  margin: 0px 7px 0px 4px !important;
+  width: 86% !important;
+  padding-top: 2px !important;
+  padding-left: 8px;
+  height: 30px!important;
+}
+.mainpage .rpadding{
+padding-right: 23px!important;
+}
