@@ -26,22 +26,41 @@ margin: 0 5px;
  } */
 .mat-mdc-card-content {
   display: block;
-  padding: 0 50px;
+  padding: 20px 50px;
 }
 .flexcenter{
   justify-content: flex-end;
   align-items: flex-end;
+  padding-left:8px
 }
 .flex{
   display:inline-flex;
   flex-flow: row wrap;
 }
+.main-nav{
+  height: 10%!important;
+  background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
+}
+.sbmt-btn{
+  background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
+  color:#fff!important;
+  margin-bottom:0%;
+  font-size: 14px!important;
+  width: 100%!important;
+  height: 40px!important;
+}
+.logo-img{
+  width: 100px;
+  height: auto;
+  margin-right: 8%;
+}
 .mainheader{
   display: flex;
-    padding: 16px 57px 0;
-    margin-bottom: 25px;
+    padding: 16px 49px 0;
+    margin-bottom: 15px;
   font-weight: bold;
   font-size: 14px;
+  color:#fff;
   /* height:250px;
   min-height: 250px;
  max-height: 250px;
@@ -100,13 +119,13 @@ margin-top:0%;
 .table-header-cell{
   padding: 0px 18px 0 16px!important;
 }
-.sbmt-btn{
+/* .sbmt-btn{
   margin-bottom:1%;
   font-size: 17px!important;
   width: 7%!important;
   height: 40px!important;
  
-}
+} */
 .mainpage .mat-sized-button{
   line-height: 24px!important;
   margin:10px 7px 0px!important;

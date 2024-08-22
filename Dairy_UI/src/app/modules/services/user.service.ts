@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,8 +30,14 @@ getApiCall(params:string): Observable<any> {
   postApiCall(params: string, data:any): Observable<any> {
     return this.http.post<any>(this.apiURL + params, data);
   }
+   HTTPOptions = {
+    headers: new HttpHeaders({
+       'Accept':'application/pdf'
+    }),
+    'responseType': 'blob' as 'json'
+ }
   getApiWithParam(params: string, id: number): Observable<any> {
-    return this.http.get<any>(this.apiURL+params+'?'+"orderId="+id);
+    return this.http.get(this.apiURL+params+'?'+"orderId="+id, { responseType: "text" }).pipe(map(r => { try { r = JSON.parse(r); } catch { } return r; }));
   }
 
 //   deleteUsers(users: User[]): Observable<User[]> {

@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserService } from '../services/user.service'
 import { MatTable } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { saveAs } from 'file-saver';
+import { FileSaver } from 'file-saver';
 
 
 @Component({
@@ -182,7 +182,7 @@ export class BillingComponent implements OnInit {
     this.userApi.postApiCall('/orders/saveOrder', reqBody).subscribe((response: any) => {
       console.log("response: ", response)
       if (response.statusCode == 200) {
-        window.location.reload();
+        //window.location.reload();
         this.printOrder(response.data[0].orderId);
       }
       else {
@@ -194,16 +194,101 @@ export class BillingComponent implements OnInit {
   }
   printOrder(orderId) {
     var mediaType = 'application/pdf';
-    return this.userApi.getApiWithParam('/print/printOrder', orderId).subscribe((response: any) => {
+    return this.userApi.getApiWithParam('/print/printOrder', orderId).subscribe((response) => {
+      
+        let blob: any = new Blob([(response)], { type: 'application/pdf' });
 
-      if (response.statusCode == 200) {
-        this.billingForm.reset();
-        this.myformArray.reset();
-        var blob = new Blob([response], { type: mediaType });
-        saveAs(blob, 'bill.pdf');
-      }
+//Create blobUrl from blob object.
+let blobUrl: string = window.URL.createObjectURL(blob); 
+
+//Use a download link.
+let link: any = window.document.createElement('a'); 
+if ('download' in link) {
+    link.setAttribute('href', blobUrl);
+
+    //Set the download attribute.
+    //Edge doesn’t take filename here.
+    link.setAttribute("download", response.fileName);
+
+    //Simulate clicking download link.
+    let event: any = window.document.createEvent('MouseEvents');
+    event.initMouseEvent
+        ('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+    link.dispatchEvent(event);  
+}
+window.location.reload();
+    //     var byteCharacters = atob(response.fileContent);
+    //     var byteNumbers = new Array(byteCharacters.length);
+    //     for (var i = 0; i < byteCharacters.length; i++) {
+    //         byteNumbers[i] = byteCharacters.charCodeAt(i);
+    // }
+    // var byteArray:Uint8Array = new Uint8Array(byteNumbers); 
+
+    // let filename = response.fileName;  
+    // let binaryData = [];
+    // binaryData.push(byteArray);
+    // let downloadLink = document.createElement('a');
+    // downloadLink.href = window.URL.createObjectURL(
+    // new Blob(binaryData, { type: 'blob' }));
+    // downloadLink.setAttribute('download', filename);
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+  
+      // const blob = new Blob([response], {type: 'application/pdf'});
+      // let fileName = 'myPdfFile';
+      // let url= URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = fileName;
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      // URL.revokeObjectURL(url);
+    //   const linkSource = 'data:application/pdf;base64,' + response;
+    //  const downloadLink = document.createElement("a");
+    //  const fileName = "sample.pdf";
+
+    // downloadLink.href = linkSource;
+    // downloadLink.download = fileName;
+    // downloadLink.click();
+      // const fileBlob=new Blob([response],{
+      //   type:'application/pdf'
+      // });
+      // FileSaver.saveAs(fileBlob,`Bill.pdf`);
+      //let blob: any = new Blob([(response.json())], { type: 'application/pdf' });
+
+//Create blobUrl from blob object.
+//let blobUrl: string = window.URL.createObjectURL(blob);
+
+//Bind trustedUrl to element src.
+//this.iframeSrc = this.sanitizer.bypassSecurityTrustResourceUrl(blobUrl);          
+
+//Revoking blobUrl.
+//window.URL.revokeObjectURL(blobUrl);
+//  var url=window.URL.createObjectURL(blob);
+//       var a =document.createElement('a');
+//       a.href=url;
+//       a.download="Bill.pdf";
+//       document.body.appendChild(a);
+//       a.click();
+//       a.remove();
     })
+      // var url=window.URL.createObjectURL(blob);
+      // var a =document.createElement('a');
+      // a.href=url;
+      // a.download="Bill.pdf";
+      // document.body.appendChild(a);
+      // a.click();
+      // a.remove();
 
+      // if (response.statusCode == 200) {
+      //   // this.billingForm.reset();
+      //   // this.myformArray.reset();
+      //   var blob = new Blob([response], { type: mediaType });
+      //   saveAs(blob, 'bill.pdf');
+      // }
+    
+      
   }
 
 
