@@ -75,6 +75,16 @@ margin: 0 5px;
   justify-content: flex-end;
   align-items: flex-end;
 }
+.mdc-data-table__header-cell {
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  outline: none;
+  text-align: center!important;
+}
+.mdc-data-table{
+height:600px; overflow-y: auto
+}
 .mainpage .item-s5{
 flex-basis: 4%;
 height:55px;

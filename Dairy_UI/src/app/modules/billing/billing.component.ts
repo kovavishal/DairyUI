@@ -48,10 +48,10 @@ export class BillingComponent implements OnInit {
       product_name: new FormControl(''),
       quantity: new FormControl(''),
       extras: new FormControl(''),
-      rate: new FormControl(0),
+      rate: new FormControl('0.00'),
       cgst_percentage: new FormControl(0),
       sgst_percentage: new FormControl(0),
-      amount: new FormControl(0)
+      amount: new FormControl('0.00')
     })
   ])
   columns: number = 8;
@@ -74,10 +74,10 @@ export class BillingComponent implements OnInit {
         product_name: new FormControl(''),
         quantity: new FormControl(''),
         extras: new FormControl(''),
-        rate: new FormControl(0),
+        rate: new FormControl('0.00'),
         cgst_percentage: new FormControl(0),
         sgst_percentage: new FormControl(0),
-        amount: new FormControl(0)
+        amount: new FormControl('0.00')
       })
     );
     this.table.renderRows();
@@ -92,19 +92,30 @@ export class BillingComponent implements OnInit {
       this.isLastRow = false;
       this.myformArray.removeAt(index);
       this.table.renderRows();
+      // let amount = this.myformArray.at(index).get('amount')?.getRawValue();
+      // this.myformArray.at(index).get('amount')?.setValue(parseFloat(amount).toFixed(2));
+    var totalAmnt: any = 0;
+    this.myformArray.controls.map((data) => {
+      console.log("data: ", data)
+      var amntVal: any = data.controls.amount.value;
+      totalAmnt = parseFloat(totalAmnt) + parseFloat(amntVal);
+      this.billingForm.controls['totalAmount'].setValue(parseFloat(totalAmnt).toFixed(2))
+
+    })
     } else {
       this.isLastRow = true;
       this.myformArray = new FormArray([
-      new FormGroup({
-        product_name: new FormControl(''),
-        quantity: new FormControl(''),
-        extras: new FormControl(''),
-        rate: new FormControl(0),
-        cgst_percentage: new FormControl(0),
-        sgst_percentage: new FormControl(0),
-        amount: new FormControl(0)
-      })
-    ])
+        new FormGroup({
+          product_name: new FormControl(''),
+          quantity: new FormControl(''),
+          extras: new FormControl(''),
+          rate: new FormControl('0.00'),
+          cgst_percentage: new FormControl(0),
+          sgst_percentage: new FormControl(0),
+          amount: new FormControl('0.00')
+        })
+      ])
+      this.billingForm.controls['totalAmount'].setValue('0.00')
     }
   }
 
@@ -168,7 +179,7 @@ export class BillingComponent implements OnInit {
     //     amount: new FormControl(0)
     //   })
     // ])
-     this.userApi.postApiCall('/orders/saveOrder', reqBody).subscribe((response: any) => {
+    this.userApi.postApiCall('/orders/saveOrder', reqBody).subscribe((response: any) => {
       console.log("response: ", response)
       if (response.statusCode == 200) {
         window.location.reload();
@@ -184,7 +195,7 @@ export class BillingComponent implements OnInit {
   printOrder(orderId) {
     var mediaType = 'application/pdf';
     return this.userApi.getApiWithParam('/print/printOrder', orderId).subscribe((response: any) => {
-     
+
       if (response.statusCode == 200) {
         this.billingForm.reset();
         this.myformArray.reset();
@@ -213,17 +224,37 @@ export class BillingComponent implements OnInit {
     let cgst_percent = this.myformArray.at(index).get('cgst_percentage')?.getRawValue();
     let sgst_percent = this.myformArray.at(index).get('sgst_percentage')?.getRawValue();
     let baseAmount = litre * rate;
+    console.log("BA: ", baseAmount)
     let cgst = baseAmount * (cgst_percent / 100);
+    console.log("cgst: ", cgst)
     let sgst = baseAmount * (sgst_percent / 100);
-    let amount = Math.abs(baseAmount + cgst + sgst).toFixed(0);
-    this.myformArray.at(index).get('amount')?.setValue(parseInt(amount));
+    console.log("sgst: ", sgst)
+    let amount:any = baseAmount + cgst + sgst;
+    console.log("amount: ", parseFloat(amount))
+    this.myformArray.at(index).get('amount')?.setValue(parseFloat(amount).toFixed(2));
     var totalAmnt: any = 0;
     this.myformArray.controls.map((data) => {
       console.log("data: ", data)
       var amntVal: any = data.controls.amount.value;
-      totalAmnt = parseInt(totalAmnt) + parseInt(amntVal);
-      this.billingForm.controls['totalAmount'].setValue(totalAmnt)
+      totalAmnt = parseFloat(totalAmnt) + parseFloat(amntVal);
+      this.billingForm.controls['totalAmount'].setValue(parseFloat(totalAmnt).toFixed(2))
 
     })
+  }
+  onlyNumberKey(event) {
+    return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
+  }
+  onlyDecimalNumberKey(event) {
+    // let charCode = (event.which) ? event.which : event.keyCode;
+    // if (charCode != 46 && charCode > 31
+    //     && (charCode < 48 || charCode > 57))
+    //     return false;
+    // return true;
+    const reg = /^-?\d*(\.\d{0,9})?$/;
+    let input = event.target.value + String.fromCharCode(event.charCode);
+
+    if (!reg.test(input)) {
+      event.preventDefault();
+    }
   }
 }
