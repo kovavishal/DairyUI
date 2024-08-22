@@ -22,18 +22,12 @@
                     </mat-select>
                 </mat-form-field>
            
-                <!-- <matButton [mat-mini-fab]>
-                    <mat-icon aria-hidden="false"
-                        style="color: green; font-size: 44px; width: 44px; height: 44px;"
-                        fontIcon="add"></mat-icon>
-                </matButton> -->
-                
                 <button mat-raised-button matTooltip="Add Item" class="mdc-fab mdc-fab--mini" aria-label="add" (click)="addRow($event)" class="mat-elevation-z1 item-s5">
                     <div class="mdc-fab__ripple"></div>
                     <span class="mdc-fab__icon material-icons">add</span>
                 </button>
 </div>
-<div>
+<div >
     <table mat-table [dataSource]="myformArray.controls" class="mat-elevation-z8">
         <ng-container matColumnDef="product_name" >
             <th mat-header-cell class="table-header-cell" *matHeaderCellDef> Product </th>
@@ -123,7 +117,7 @@
                    
                 <!-- </mat-table> -->
 </div>
-<div style="align-items: normal; margin-top:12px;" class="flex flexend">
+<div style="float:right; margin-top:12px;" class="flex flexend">
     <div class="rpadding">
         <!-- <mat-form-field mat-sized-input>
             <mat-label>Total Amount</mat-label> -->
