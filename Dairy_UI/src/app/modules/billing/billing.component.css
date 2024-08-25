@@ -31,7 +31,8 @@ margin: 0 5px;
 .flexcenter{
   justify-content: flex-end;
   align-items: flex-end;
-  padding-left:8px
+  padding-left:8px;
+  padding-right:8px;
 }
 .flex{
   display:inline-flex;
@@ -43,12 +44,13 @@ margin: 0 5px;
 }
 .sbmt-btn{
   background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
-  color:#fff!important;
-  margin-bottom:0%;
-  font-size: 14px!important;
-  width: 100%!important;
-  height: 40px!important;
+  color: #fff !important;
+  margin-bottom: 26%;
+  font-size: 14px !important;
+  width: 100% !important;
+  height: 52px !important;
 }
+
 .logo-img{
   width: 100px;
   height: auto;
@@ -60,39 +62,33 @@ margin: 0 5px;
     margin-bottom: 15px;
   font-weight: bold;
   font-size: 14px;
-  color:#fff;
-  /* height:250px;
-  min-height: 250px;
- max-height: 250px;
- overflow-y: auto; */
-
+  color:#fff;  
 }
+
 .mainpage .mat-form-field{
   font-size: 12px!important;
   width: 100%!important;
   line-height: 15px!important;
   
 }
-/* .mainpage .mat-date{
-  height: 53px;
-    padding-right: 67px;
-    text-align: right;
-    margin-right: 40px;
-} */
+
 .mainpage .search-container{
   flex-flow: row nowrap!important;
   justify-content: flex-start!important;
   align-items: stretch!important;
   align-content: stretch!important;
-  width:50%!important;
+  width:100%!important;
 }
 .mainpage .item{
   padding: 0px 5px!important;
   width: 40%!important;
 }
-.mainpage .item-s6{
-  flex-basis: 35%;
+
+.mainpage .item-s1{
+  padding: 0px 5px!important;
+  flex-basis: 16%;
 }
+
 .mainpage .table{
    padding-left:5px
 }
@@ -108,13 +104,13 @@ margin: 0 5px;
   text-align: center!important;
 }
 .mat-mdc-table{
-height:600px!important; overflow-y: auto!important;display: block;
+height:500px!important; overflow-y: auto!important;display: block;
 }
 .mainpage .item-s5{
 flex-basis: 4%;
 height:55px;
-margin-left: 3%;
-margin-top:0%;
+/* margin-left: 3%;
+margin-top:0%; */
 }
 .table-header-cell{
   padding: 0px 18px 0 16px!important;
@@ -133,12 +129,22 @@ margin-top:0%;
   padding-top:2px!important;  
 }
 .mainpage .mat-sized-input{
-  margin: 0px 7px 0px 4px !important;
-  width: 86% !important;
+  margin: 9px 7px 0px 4px !important;
+  /* width: 86% !important; */
+  padding-top: 2px !important;
+  padding-left: 8px;
+  height: 30px!important;
+}
+.mainpage .mat-sized-input1{
+  margin: 5px 7px 0px 4px !important;
+  /* width: 86% !important; */
   padding-top: 2px !important;
   padding-left: 8px;
   height: 30px!important;
 }
 .mainpage .rpadding{
-padding-right: 23px!important;
+padding-left: 23px!important;
+}
+.disc-inp{
+  margin-bottom:2px;
 }

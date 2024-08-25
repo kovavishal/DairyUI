@@ -36,8 +36,9 @@ getApiCall(params:string): Observable<any> {
     }),
     'responseType': 'blob' as 'json'
  }
-  getApiWithParam(params: string, id: number): Observable<any> {
-    return this.http.get(this.apiURL+params+'?'+"orderId="+id, { responseType: "text" }).pipe(map(r => { try { r = JSON.parse(r); } catch { } return r; }));
+  getApiWithParam(params: string, id: number) {
+    return this.http.get(this.apiURL+params+'?'+"orderId="+id, { responseType: "blob" })
+    .toPromise();
   }
 
 //   deleteUsers(users: User[]): Observable<User[]> {

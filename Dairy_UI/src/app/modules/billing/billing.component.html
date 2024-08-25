@@ -20,26 +20,62 @@
         <mat-card-content class="mainpage">
             <form [formGroup]="billingForm" (ngSubmit)="onSubmit()">
                 <div class="flex search-container">
-                    <mat-form-field style="margin-right:3%;">
+                    <mat-form-field class="item item-s1" style="margin-right:1%;" appearance="outline">
                         <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="inputDate"
                             required>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <!-- <input type="date" class="mat-date" (change)="SendDataonChange($event)" /> -->
-                    <mat-form-field class="item item-s6">
-                        <mat-label>Select Customer</mat-label>
-                        <mat-select formControlName="customer" required>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;" appearance="outline">
+                        <mat-label>Select Customer Mob No.</mat-label>
+                        <mat-select formControlName="customer" 
+                        (selectionChange)='onCustomerOnchange($event.value)' required>
                             <mat-option *ngFor="let customer of Customer"
-                                [value]="customer.user_id">{{customer.user_name}}</mat-option>
+                                [value]="customer.user_id">{{customer.phone_number}}</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;">
+                        <mat-label>Customer Name</mat-label>
+                        <input matInput formControlName="customerName" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;">
+                        <mat-label>Address</mat-label>
+                        <input matInput formControlName="customerAddress" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="item item-s1">
+                        <mat-label>Route</mat-label>
+                        <textarea  matInput formControlName="route" rows="1" style="resize: none; overflow-y: sroll;" readonly class="addressText"></textarea>
+                    </mat-form-field>
+                   
 
+                  
+                </div>
+                <div class="flex search-container">
+                    <mat-form-field class="item item-s1" style="margin-right:1%;">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;">
+                        <mat-label>Pin Code</mat-label>
+                        <input matInput formControlName="pincode" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;" appearance="outline">
+                        <mat-label>Out-standing Crates</mat-label>
+                        <input matInput formControlName="outStdCrates" (keypress)="onlyNumberKey($event)">
+                    </mat-form-field>
+                    <mat-form-field class="item item-s1" style="margin-right:1%;" appearance="outline">
+                        <mat-label>Received Crates</mat-label>
+                        <input matInput formControlName="receivedCrates" (keypress)="onlyNumberKey($event)">
+                    </mat-form-field>
                     <button mat-raised-button matTooltip="Add Item" class="mdc-fab mdc-fab--mini" aria-label="add"
-                        (click)="addRow($event)" class="mat-elevation-z1 item-s5">
-                        <div class="mdc-fab__ripple"></div>
-                        <span class="mdc-fab__icon material-icons">add</span>
-                    </button>
+                    (click)="addRow($event)" class="mat-elevation-z1 item-s5" style="left: 463px;
+                    color: #fff;
+                    background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
+                    flex-basis: 4%;">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">add</span>
+                </button> 
                 </div>
                 <div>
                     <table mat-table [dataSource]="myformArray.controls" class="mat-elevation-z8">
@@ -73,7 +109,7 @@
                             <td mat-cell *matCellDef="let element;let i=index;">
                                 <mat-form-field style="margin-top:20px;" appearance="outline">
                                     <input matInput [formControl]="element.get('extras')"
-                                        (focusout)="focusOutFunction($event, i)"
+                                        (focusout)="focusOutFunction($event, i, 'litre')"
                                         (keypress)="onlyDecimalNumberKey($event)" required>
                                 </mat-form-field>
                             </td>
@@ -82,8 +118,8 @@
                             <th mat-header-cell *matHeaderCellDef> Rate/Unit</th>
 
                             <td mat-cell *matCellDef="let element">
-                                <mat-form-field style="margin-top:20px;" appearance="outline">
-                                    <input matInput [formControl]="element.get('rate')" readonly="true">
+                                <mat-form-field style="margin-top:20px;">
+                                    <input matInput [formControl]="element.get('rate')" readonly>
                                 </mat-form-field>
                             </td>
                         </ng-container>
@@ -91,8 +127,8 @@
                             <th mat-header-cell *matHeaderCellDef> CGST (%)</th>
 
                             <td mat-cell *matCellDef="let element">
-                                <mat-form-field style="margin-top:20px;" appearance="outline">
-                                    <input matInput [formControl]="element.get('cgst_percentage')" readonly="true">
+                                <mat-form-field style="margin-top:20px;">
+                                    <input matInput [formControl]="element.get('cgst_percentage')" readonly>
                                 </mat-form-field>
                             </td>
                         </ng-container>
@@ -100,8 +136,8 @@
                             <th mat-header-cell *matHeaderCellDef> SGST (%)</th>
 
                             <td mat-cell *matCellDef="let element">
-                                <mat-form-field style="margin-top:20px;" appearance="outline">
-                                    <input matInput [formControl]="element.get('sgst_percentage')" readonly="true">
+                                <mat-form-field style="margin-top:20px;">
+                                    <input matInput [formControl]="element.get('sgst_percentage')" readonly>
                                 </mat-form-field>
                             </td>
                         </ng-container>
@@ -109,8 +145,8 @@
                             <th mat-header-cell *matHeaderCellDef> Amount </th>
 
                             <td mat-cell *matCellDef="let element">
-                                <mat-form-field style="margin-top:20px;" appearance="outline">
-                                    <input matInput [formControl]="element.get('amount')" readonly="true">
+                                <mat-form-field style="margin-top:20px;">
+                                    <input matInput [formControl]="element.get('amount')" readonly>
                                 </mat-form-field>
                             </td>
                         </ng-container>
@@ -130,11 +166,32 @@
                     </table>
                 </div>
                 <div style="float:right; margin-top:12px;" class="flex flexend">
-                    <div class="rpadding">
+                    <div>
                         <!-- <mat-form-field mat-sized-input>
             <mat-label>Total Amount</mat-label> -->
-                        <input class="mat-sized-input" matInput formControlName="totalAmount" placeholder="Total Amount"
-                            [readonly]="true">
+            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                <mat-label>Total Amount</mat-label>
+                <input matInput formControlName="totalAmount" readonly style="padding-top: 3px;" placeholder="0.00">
+            </mat-form-field>
+            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important;">
+                <mat-label>Discount</mat-label>
+                <input matInput formControlName="discount" style="padding-top: 3px;" (focusout)="focusOutFunction($event, 0, 'disc')"
+                (keypress)="onlyDecimalNumberKey($event)" placeholder="0.00">
+            </mat-form-field>
+            <!-- <mat-form-field class="mat-sized-input" style="margin-right:1%;" appearance="outline" class="disc-inp">
+                <mat-label>Discount</mat-label>
+                <input matInput formControlName="discount" (keypress)="onlyDecimalNumberKey($event)" placeholder="0.00">
+            </mat-form-field> -->
+            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                <mat-label>Tax Amount</mat-label>
+                <input matInput formControlName="taxAmount" readonly style="padding-top: 3px;" placeholder="0.00">
+            </mat-form-field>
+            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                <mat-label>Net Amount</mat-label>
+                <input matInput formControlName="netAmount" readonly style="padding-top: 3px;" placeholder="0.00">
+            </mat-form-field>
+                        
+                           
                         <!-- </mat-form-field> -->
                     </div>
                     <div class="rpadding">
