@@ -26,9 +26,17 @@
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    <!-- <input type="date" class="mat-date" (change)="SendDataonChange($event)" /> -->
                     <mat-form-field class="item item-s1" style="margin-right:1%;" appearance="outline">
                         <mat-label>Select Customer Mob No.</mat-label>
+
+                        <!-- <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="customer"
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            @for (option of filteredOptions | async; track option) {
+                            
+                            <mat-option [value]="option.user_id">{{option.phone_number}}</mat-option>
+                            }
+                        </mat-autocomplete> -->
                         <mat-select formControlName="customer" 
                         (selectionChange)='onCustomerOnchange($event.value)' required>
                             <mat-option *ngFor="let customer of Customer"
@@ -45,11 +53,12 @@
                     </mat-form-field>
                     <mat-form-field class="item item-s1">
                         <mat-label>Route</mat-label>
-                        <textarea  matInput formControlName="route" rows="1" style="resize: none; overflow-y: sroll;" readonly class="addressText"></textarea>
+                        <textarea matInput formControlName="route" rows="1" style="resize: none; overflow-y: sroll;"
+                            readonly class="addressText"></textarea>
                     </mat-form-field>
-                   
 
-                  
+
+
                 </div>
                 <div class="flex search-container">
                     <mat-form-field class="item item-s1" style="margin-right:1%;">
@@ -69,13 +78,13 @@
                         <input matInput formControlName="receivedCrates" (keypress)="onlyNumberKey($event)">
                     </mat-form-field>
                     <button mat-raised-button matTooltip="Add Item" class="mdc-fab mdc-fab--mini" aria-label="add"
-                    (click)="addRow($event)" class="mat-elevation-z1 item-s5" style="left: 463px;
+                        (click)="addRow($event)" class="mat-elevation-z1 item-s5" style="left: 463px;
                     color: #fff;
                     background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
                     flex-basis: 4%;">
-                    <div class="mdc-fab__ripple"></div>
-                    <span class="mdc-fab__icon material-icons">add</span>
-                </button> 
+                        <div class="mdc-fab__ripple"></div>
+                        <span class="mdc-fab__icon material-icons">add</span>
+                    </button>
                 </div>
                 <div>
                     <table mat-table [dataSource]="myformArray.controls" class="mat-elevation-z8">
@@ -86,8 +95,8 @@
                                     <mat-label>Select Product</mat-label>
                                     <mat-select [formControl]="element.get('product_name')" required
                                         (selectionChange)='onProductSelected($event.value, i)'>
-                                        <mat-option *ngFor="let product of products"
-                                            [value]="product.product_id">{{product.product_name}}</mat-option>
+                                        <mat-option *ngFor="let product of products" [value]="product.product_id">
+                                            {{product.product_name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </td>
@@ -167,32 +176,27 @@
                 </div>
                 <div style="float:right; margin-top:12px;" class="flex flexend">
                     <div>
-                        <!-- <mat-form-field mat-sized-input>
-            <mat-label>Total Amount</mat-label> -->
-            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
-                <mat-label>Total Amount</mat-label>
-                <input matInput formControlName="totalAmount" readonly style="padding-top: 3px;" placeholder="0.00">
-            </mat-form-field>
-            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important;">
-                <mat-label>Discount</mat-label>
-                <input matInput formControlName="discount" style="padding-top: 3px;" (focusout)="focusOutFunction($event, 0, 'disc')"
-                (keypress)="onlyDecimalNumberKey($event)" placeholder="0.00">
-            </mat-form-field>
-            <!-- <mat-form-field class="mat-sized-input" style="margin-right:1%;" appearance="outline" class="disc-inp">
-                <mat-label>Discount</mat-label>
-                <input matInput formControlName="discount" (keypress)="onlyDecimalNumberKey($event)" placeholder="0.00">
-            </mat-form-field> -->
-            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
-                <mat-label>Tax Amount</mat-label>
-                <input matInput formControlName="taxAmount" readonly style="padding-top: 3px;" placeholder="0.00">
-            </mat-form-field>
-            <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
-                <mat-label>Net Amount</mat-label>
-                <input matInput formControlName="netAmount" readonly style="padding-top: 3px;" placeholder="0.00">
-            </mat-form-field>
-                        
-                           
-                        <!-- </mat-form-field> -->
+                        <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                            <mat-label>Total Amount</mat-label>
+                            <input matInput formControlName="totalAmount" readonly style="padding-top: 3px;"
+                                placeholder="0.00">
+                        </mat-form-field>
+                        <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important;">
+                            <mat-label>Discount</mat-label>
+                            <input matInput formControlName="discount" style="padding-top: 3px;"
+                                (focusout)="focusOutFunction($event, 0, 'disc')"
+                                (keypress)="onlyDecimalNumberKey($event)" placeholder="0.00">
+                        </mat-form-field>
+                        <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                            <mat-label>Tax Amount</mat-label>
+                            <input matInput formControlName="taxAmount" readonly style="padding-top: 3px;"
+                                placeholder="0.00">
+                        </mat-form-field>
+                        <mat-form-field class="mat-sized-input" style="margin-right:1%; height:75px!important">
+                            <mat-label>Net Amount</mat-label>
+                            <input matInput formControlName="netAmount" readonly style="padding-top: 3px;"
+                                placeholder="0.00">
+                        </mat-form-field>
                     </div>
                     <div class="rpadding">
                         <button mat-raised-button class="sbmt-btn" type="submit">Submit</button>

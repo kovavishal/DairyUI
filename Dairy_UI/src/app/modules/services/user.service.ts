@@ -26,7 +26,15 @@ getApiCall(params:string): Observable<any> {
       .get<any>(this.apiURL + params)
      // .pipe(retry(1), catchError(this.handleError));
   }
-
+submitApi(params: string, data:any): Observable<any> {
+  return this.http.post<any>(this.apiURL + params, data);
+}
+updateApi(params: string, data:any): Observable<any> {
+  return this.http.put<any>(this.apiURL + params, data);
+}
+deleteApi(params: string): Observable<any> {
+  return this.http.delete<any>(this.apiURL + params);
+}
   postApiCall(params: string, data:any): Observable<any> {
     return this.http.post<any>(this.apiURL + params, data);
   }

@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTable } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,7 +19,7 @@ import { DatePipe } from '@angular/common';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,HttpClientModule,MatTable],
+    MatButtonModule,HttpClientModule,MatTable, MatAutocompleteModule],
     providers:[DatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

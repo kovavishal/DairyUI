@@ -1,0 +1,143 @@
+<section  class="flexcenter">
+
+    <mat-card class="matcard">
+
+        <div class="main-nav">
+            <table width="100%">
+                <tr>
+                    <td align="left">
+                        <mat-card-header class="mainheader">
+                            <mat-card-title>USER PAGE</mat-card-title>
+                        </mat-card-header>
+                    </td>
+                    <td align="right">
+                        <img class="logo-img" src="/assets/images/logo.png" alt="image">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <mat-card-content class="mainpage">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="flex search-container">
+            <table style="width:100%">
+                <tr >
+                    <div class="table-container mat-elevation-z8">
+            <mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="userName">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:25%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> Customer Name </th>
+                    <td mat-cell *matCellDef="let element;" style="width:25%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.user_name}}
+                    </td>
+
+                </ng-container>
+                <ng-container matColumnDef="phoneNum">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:15%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> Mobile Number </th>
+                    <td mat-cell *matCellDef="let element;" style="width:15%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.phone_number}}
+                    </td>
+
+                </ng-container>
+                <ng-container matColumnDef="gstNum">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:20%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> GST No. </th>
+                    <td mat-cell *matCellDef="let element;" style="width:20%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.gst_number}}
+                    </td>
+
+                </ng-container>
+                <ng-container matColumnDef="route">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:30%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> Route </th>
+                    <td mat-cell *matCellDef="let element;" style="width:30%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.address.area}}
+                    </td>
+
+                </ng-container>
+                <!-- <ng-container matColumnDef="city">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:10%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> City </th>
+                    <td mat-cell *matCellDef="let element;" style="width:10%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.address.district}}
+                    </td>
+
+                </ng-container>
+                <ng-container matColumnDef="pincode">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:10%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> Pin Code </th>
+                    <td mat-cell *matCellDef="let element;" style="width:10%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        {{element.address.pincode}}
+                    </td>
+
+                </ng-container> -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell class="table-header-cell" *matHeaderCellDef style="width:25%!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Action</th>
+                    <td mat-cell *matCellDef="let element;" style="width:25%!important;padding: 0 14px 0 16px!important;border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                        <button mat-raised-button matTooltip="Edit Customer" class="mdc-fab mdc-fab--mini" aria-label="edit"
+                        (click)="editRow($event, element.user_id)" class="mat-elevation-z1" style="color: #fff; right:10px;
+                        background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
+                        min-width:30px!important;height:38px!important;">
+                        <div class="mdc-fab__ripple"></div>
+                        <span class="mdc-fab__icon material-icons">edit</span>
+                    </button> 
+                    <button mat-raised-button matTooltip="Delete Customer" class="mdc-fab mdc-fab--mini" aria-label="delete"
+                    (click)="deleteRow($event, element.user_id)" class="mat-elevation-z1" style="color: #fff;
+                    background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
+                    min-width:30px!important;height:38px!important">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">delete</span>
+                </button> 
+                    </td>
+
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+            </mat-table>
+        </div>
+        </tr>
+        <tr>
+        <table style="width: 100%;margin-top: 45px;">
+        <tr align="center">
+            <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+                <mat-label>Customer Name</mat-label>
+                <input matInput formControlName="customerName" required>
+            </mat-form-field>
+            <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+                <mat-label>Mobile Number</mat-label>
+                <input type="email" matInput formControlName="phoneNum" required minlength=10 maxlength=10 (keypress)="onEventChange($event)">
+            </mat-form-field>
+            <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+                <mat-label>Email Address</mat-label>
+                <input matInput formControlName="email" (focusout)="onMailEventChange($event)" id="emailInput">
+            </mat-form-field>
+            <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="address" required>
+            </mat-form-field>
+        </tr>
+    <tr align="center">
+        <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+            <mat-label>Area</mat-label>
+            <input matInput formControlName="route" required>
+        </mat-form-field>
+        <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" required>
+        </mat-form-field>
+        <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+            <mat-label> Pin Code</mat-label>
+            <input matInput formControlName="pincode">
+        </mat-form-field>
+        <mat-form-field class="item" style="margin-right:1%;" appearance="outline">
+            <mat-label>GST No.</mat-label>
+            <input matInput formControlName="gstNum" required>
+        </mat-form-field>
+    </tr>
+    <tr align="center">
+        <td >
+            <button mat-raised-button class="sbmt-btn" type="submit">Submit</button>
+        </td>
+    </tr>
+    </table>
+</tr>
+</table>
+    </div>
+        </form>
+    </mat-card-content>
+    </mat-card>
+</section>

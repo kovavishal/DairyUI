@@ -1,11 +1,10 @@
 import {
   DOCUMENT,
   isPlatformBrowser
-} from "./chunk-CBRJBBAF.js";
+} from "./chunk-H4ZQWNQC.js";
 import {
   ANIMATION_MODULE_TYPE,
   APP_ID,
-  BehaviorSubject,
   CSP_NONCE,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,33 +20,18 @@ import {
   LOCALE_ID,
   NgModule,
   NgZone,
-  Observable,
   Optional,
   Output,
   PLATFORM_ID,
   QueryList,
-  Subject,
-  Subscription,
   Version,
   ViewChild,
   ViewEncapsulation$1,
   booleanAttribute,
-  combineLatest,
-  concat,
-  debounceTime,
-  distinctUntilChanged,
   effect,
-  filter,
   inject,
   isSignal,
-  map,
-  of,
   setClassMetadata,
-  skip,
-  startWith,
-  take,
-  takeUntil,
-  tap,
   ɵɵInputTransformsFeature,
   ɵɵNgOnChangesFeature,
   ɵɵProvidersFeature,
@@ -78,7 +62,25 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-UGQ3HPSB.js";
+} from "./chunk-H2G4WVJU.js";
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  Subscription,
+  combineLatest,
+  concat,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  of,
+  skip,
+  startWith,
+  take,
+  takeUntil,
+  tap
+} from "./chunk-EDKTM5FI.js";
 import {
   __spreadProps,
   __spreadValues
@@ -5160,6 +5162,7 @@ export {
   _getEventTarget,
   _isTestEnvironment,
   BACKSPACE,
+  TAB,
   ENTER,
   ESCAPE,
   SPACE,
@@ -5238,4 +5241,4 @@ export {
   MatRippleLoader,
   _MatInternalFormField
 };
-//# sourceMappingURL=chunk-FQUMGACF.js.map
+//# sourceMappingURL=chunk-XOB7QTXA.js.map
