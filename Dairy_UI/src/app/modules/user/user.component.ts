@@ -15,10 +15,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserService } from '../services/user.service'
 import { MatTable } from '@angular/material/table';
-
 @Component({
   selector: 'app-user',
   standalone: true,
+  
   imports: [CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -37,6 +37,10 @@ export class UserComponent implements OnInit {
   Customer: any = [];
   isUpdate:boolean=false;
   userId:any;
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+  displayProgressSpinner:boolean = false;
   dataSource!: MatTableDataSource<any>;
   constructor(private fb: FormBuilder, public userApi: UserService){
     this.userForm = this.fb.group({
@@ -58,7 +62,7 @@ this.loadUsers();
     return this.userApi.getApiCall('/users/getAllCustomers').subscribe((data: any) => {
       this.Customer = data.data;
       this.dataSource=this.Customer;
-  
+  this.displayProgressSpinner=false;
     });
     
   }
@@ -66,15 +70,16 @@ this.loadUsers();
 
   deleteRow(event, id){
     event.preventDefault();
+    this.displayProgressSpinner=true;
     var param ='/users/deleteCustomer'+'?'+'user_id='+id;
     this.userApi.deleteApi(param).subscribe((response: any) => {
       if (response.statusCode == 200) {
        console.log("deleteResp: ", response)
-       window.location.reload();
-      }
+}
       else {
     
       }
+      this.loadUsers();
     })
   }
 editRow(event, id){
@@ -105,6 +110,7 @@ this.Customer.map((items)=>{
 // })
 }
 onSubmit(): void{
+  this.displayProgressSpinner=true;
 const userReq=this.userForm.value;
 if(!this.isUpdate){
 var reqBody={
@@ -125,6 +131,7 @@ var reqBody={
 this.userApi.submitApi('/users/saveCustomer', reqBody).subscribe((response: any) => {
   if (response.statusCode == 200) {
    console.log("saveResp: ", response)
+   window.location.reload();
   }
   else {
 
@@ -156,6 +163,7 @@ this.userApi.submitApi('/users/saveCustomer', reqBody).subscribe((response: any)
   }
 })
 }
+//this.loadUsers();
 }
 onEventChange(event){
   const pattern = /[0-9\+\-\ ]/;

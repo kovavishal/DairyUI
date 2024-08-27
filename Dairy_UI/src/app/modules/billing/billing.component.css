@@ -26,7 +26,6 @@ margin: 0 5px;
  } */
 .mat-mdc-card-content {
   display: block;
-  padding: 20px 50px;
 }
 .flexcenter{
   justify-content: flex-end;

@@ -1,0 +1,32 @@
+<section  class="main-div">
+
+    <mat-card class="example-card" style="width:40%!important">
+        <mat-card-content >
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <table style="width:100%" cellspacing="0">
+                        <tr align="center">
+                            <td>
+                    <mat-form-field style="width:50%!important" appearance="outline">
+                        <mat-label>User Name</mat-label>
+                        <input matInput formControlName="userName" required>
+                    </mat-form-field>
+                </td>
+                    </tr>
+                    <tr align="center">
+                        <td>
+                <mat-form-field style="width:50%!important" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" required>
+                </mat-form-field>
+            </td>
+                </tr>
+                <tr align="center">
+                    <td >
+                        <button mat-raised-button class="sbmt-btn" type="submit">Submit</button>
+                    </td>
+                </tr>
+                    </table>
+            </form>
+            </mat-card-content>
+</mat-card>
+</section>
