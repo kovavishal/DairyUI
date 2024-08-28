@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
       "password":userReq.password
     }
     if (this.loginForm.valid) {
-    this.router.navigate(["/user"]);
+    this.router.navigate(["/billing"]);
     }
     // this.user.submitApi('/users/loginCheck', reqBody).subscribe((response: any) => {
     //   if (response.statusCode == 200) {

@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatTable } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
 import {NavbarComponent} from './navbar/navbar.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -24,7 +25,7 @@ import { filter } from 'rxjs/operators';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,HttpClientModule,MatTable, MatAutocompleteModule, NavbarComponent],
+    MatButtonModule,HttpClientModule,MatTable, MatAutocompleteModule, NavbarComponent, AsyncPipe],
     providers:[DatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -44,7 +45,6 @@ export class AppComponent implements OnInit{
   }
   }
   modifyHeader(location) { // This method is called many times
-    console.log(location); // This prints a loot of routes on console
     if (location.url === '/' || location.urlAfterRedirects === '/login') {
         this.showHeader = false;
     } else {

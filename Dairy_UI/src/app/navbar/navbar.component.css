@@ -1,4 +1,7 @@
-
+.mat-mdc-card {
+  position: fixed;
+  width: 100% !important;
+}
   .main-nav{
     height: 100%!important;
     background: linear-gradient(to bottom, #00bdf2 0%, #00b3f0 20%, #2f9aeb 75%, #1a7bd1 100%);
@@ -17,8 +20,7 @@
     margin-right: 8%;
   }
   .flexcenter{
-    padding-left:8px;
-    padding-right:8px;
+    padding: 0px 8px 0px 8px;
     height: 10%;
     display: flex;
     flex-direction: column;

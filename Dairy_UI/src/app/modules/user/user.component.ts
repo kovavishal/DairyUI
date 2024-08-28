@@ -110,6 +110,8 @@ this.Customer.map((items)=>{
 // })
 }
 onSubmit(): void{
+  console.log("valid: ", this.userForm.valid)
+  if(this.userForm.valid){
   this.displayProgressSpinner=true;
 const userReq=this.userForm.value;
 if(!this.isUpdate){
@@ -163,6 +165,7 @@ this.userApi.submitApi('/users/saveCustomer', reqBody).subscribe((response: any)
   }
 })
 }
+  }
 //this.loadUsers();
 }
 onEventChange(event){
