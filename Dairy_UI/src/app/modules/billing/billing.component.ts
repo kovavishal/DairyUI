@@ -34,15 +34,14 @@ import { AsyncPipe } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule, MatSelectModule, MatDatepickerModule, MatCheckboxModule, MatIconModule, MatNativeDateModule,
-    MatTooltipModule, AsyncPipe, MatAutocompleteModule],
+    MatTooltipModule, AsyncPipe, MatAutocompleteModule, MatTable],
   templateUrl: './billing.component.html',
   styleUrl: './billing.component.css'
 })
 export class BillingComponent implements OnInit {
-  @ViewChild(MatTable, { static: true })
+  @ViewChild(MatTable) table: MatTable<any>;
   options: any=[];
   filteredOptions: Observable<any[]>;
-  table!: MatTable<any>;
   billingForm!: FormGroup;
   Customer: any = [];
   products: any = [];
@@ -50,7 +49,7 @@ export class BillingComponent implements OnInit {
   isDiscEntered: boolean = false;
   customerId:number=0;
 
-  displayedColumns: string[] = ['product_name', 'quantity', 'extras', 'rate', 'cgst_percentage', 'sgst_percentage', 'amount', 'action'];
+  displayedColumns: string[] = ['product_name', 'quantity', 'extras', 'rate','amount', 'cgst_percentage', 'sgst_percentage', 'action'];
   myformArray = new FormArray([
     new FormGroup({
       product_name: new FormControl(''),
@@ -75,8 +74,8 @@ export class BillingComponent implements OnInit {
       city: [],
       pincode: [],
       outStdCrates: [''],
-      receivedCrates: ['', Validators.required],
-      inputDate: ['', Validators.required],
+      receivedCrates: [''],
+      inputDate: [new Date(), Validators.required],
       product: ['', Validators.required],
       quantity: ['', Validators.required],
       extras: ['', Validators.required],
@@ -115,8 +114,8 @@ export class BillingComponent implements OnInit {
       city: [],
       pincode: [],
       outStdCrates: [''],
-      receivedCrates: ['', Validators.required],
-      inputDate: ['', Validators.required],
+      receivedCrates: [''],
+      inputDate: [new Date(), Validators.required],
       product: ['', Validators.required],
       quantity: ['', Validators.required],
       extras: ['', Validators.required],
@@ -125,7 +124,6 @@ export class BillingComponent implements OnInit {
       taxAmount: ['0.00'],
       netAmount: ['0.00']
     });
-    
     this.loadProducts();
     this.isLastRow = true;
     this.filteredOptions = this.billingForm.controls['customer'].valueChanges.pipe(
@@ -136,7 +134,6 @@ export class BillingComponent implements OnInit {
   }
   
   filter(val: any): string[] {
-    console.log("option: ", this.Customer)
     return this.Customer?.filter((option) => {
       const num=option.phone_number;
       return num.match(val);
@@ -243,29 +240,38 @@ export class BillingComponent implements OnInit {
       if (discout_val == null || discout_val == '') {
         discout_val = '0.00';
       }
-      var net_amnt: any = parseFloat(ttlAmnt) - parseFloat(discout_val);
+      var net_amnt: any = parseFloat(ttlAmnt)+parseFloat(taxAmnt) - parseFloat(discout_val);
       this.billingForm.controls['netAmount'].setValue(parseFloat(net_amnt).toFixed(2))
     }
     if (name == "litre") {
-      let litre = event.target.value;
+      console.log("litre: ", event.target.value)
+      let litre:any=0;
+      if(event.target.value ==null || event.target.value==""){
+litre=0;
+      }else{
+       litre = event.target.value;
+    }
       var net_amount: any = '0.00';
       let rate = this.myformArray.at(index).get('rate')?.getRawValue();
-      let cgst_percent = this.myformArray.at(index).get('cgst_percentage')?.getRawValue();
-      let sgst_percent = this.myformArray.at(index).get('sgst_percentage')?.getRawValue();
+      // let cgst_percent = this.myformArray.at(index).get('cgst_percentage')?.getRawValue();
+      // let sgst_percent = this.myformArray.at(index).get('sgst_percentage')?.getRawValue();
       let baseAmount = litre * rate;
-      var cgst_val: any = baseAmount * (cgst_percent / 100);
-      var sgst_val: any = baseAmount * (sgst_percent / 100);
+      // var cgst_val: any = baseAmount * (cgst_percent / 100);
+      // var sgst_val: any = baseAmount * (sgst_percent / 100);
       var total_tax: any = '0.00';
-      let amount: any = baseAmount + cgst_val + sgst_val;
+      let amount: any = baseAmount;
       this.myformArray.at(index).get('amount')?.setValue(parseFloat(amount).toFixed(2));
       var totalAmnt: any = 0;
 
       this.myformArray.controls.map((data) => {
         var amntVal: any = data.controls.amount.value;
         totalAmnt = parseFloat(totalAmnt) + parseFloat(amntVal);
-        let cgst_ttl: any = parseFloat(data.controls.rate.value) * parseFloat(data.controls.extras.value) * (data.controls.cgst_percentage?.value / 100);
-        let sgst_ttl: any = parseFloat(data.controls.rate.value) * parseFloat(data.controls.extras.value) * (data.controls.sgst_percentage?.value / 100);
+        console.log("controls: ", data.controls)
+        let cgst_ttl: any = parseFloat(data.controls.rate?.value) * parseFloat(litre) * (data.controls.cgst_percentage?.value / 100);
+        let sgst_ttl: any = parseFloat(data.controls.rate?.value) * parseFloat(litre) * (data.controls.sgst_percentage?.value / 100);
+        console.log("gst: ", cgst_ttl," ", sgst_ttl)
         total_tax = parseFloat(cgst_ttl) + parseFloat(sgst_ttl) + parseFloat(total_tax);
+        console.log("total_tax: ", total_tax)
       })
       if (this.isDiscEntered == true) {
 
@@ -273,10 +279,10 @@ export class BillingComponent implements OnInit {
         if (discnt || discnt == '') {
           discnt = '0.00';
         }
-        net_amount = parseFloat(totalAmnt) - parseFloat(discnt);
+        net_amount = parseFloat(totalAmnt)+parseFloat(total_tax) - parseFloat(discnt);
       }
       else {
-        net_amount = parseFloat(totalAmnt);
+        net_amount = parseFloat(totalAmnt)+parseFloat(total_tax);
       }
       this.billingForm.controls['totalAmount'].setValue(parseFloat(totalAmnt).toFixed(2))
       this.billingForm.controls['taxAmount'].setValue(parseFloat(total_tax).toFixed(2))
@@ -308,7 +314,7 @@ export class BillingComponent implements OnInit {
 
 
       })
-      net_amount = parseFloat(totalAmnt) - parseFloat(discount == '' ? '0.00' : discount);
+      net_amount = parseFloat(totalAmnt)+parseFloat(total_tax) - parseFloat(discount == '' ? '0.00' : discount);
       this.billingForm.controls['totalAmount'].setValue(parseFloat(totalAmnt).toFixed(2));
       this.billingForm.controls['taxAmount'].setValue(parseFloat(total_tax).toFixed(2))
       this.billingForm.controls['netAmount'].setValue(parseFloat(net_amount).toFixed(2))
@@ -337,7 +343,7 @@ export class BillingComponent implements OnInit {
   onlyNumberKey(event) {
     return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57;
   }
-  onlyDecimalNumberKey(event) {
+  onlyDecimalNumberKey(event, value) {
     // let charCode = (event.which) ? event.which : event.keyCode;
     // if (charCode != 46 && charCode > 31
     //     && (charCode < 48 || charCode > 57))
@@ -348,6 +354,12 @@ export class BillingComponent implements OnInit {
 
     if (!reg.test(input)) {
       event.preventDefault();
+    }
+    if(value=="disc"){
+      let ttlAmnt=this.billingForm.controls['totalAmount'].value;
+      if(parseFloat(input)>=parseFloat(ttlAmnt)){
+        event.preventDefault();
+      }
     }
   }
 }
